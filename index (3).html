@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Listing Form — Seamless Landing Real Estate</title>
+<style>
+  :root {
+    --teal: #1a7a7a;
+    --teal-dark: #145f5f;
+    --teal-light: #e8f4f4;
+    --red: #c0392b;
+    --gray-100: #f7f8f8;
+    --gray-200: #e4e6e5;
+    --gray-400: #9a9c9b;
+    --gray-600: #5c5e5d;
+    --white: #ffffff;
+    --text: #1e2120;
+    --radius: 8px;
+    --radius-pill: 50px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gray-100);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── GATE SCREEN ── */
+  .gate-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #0d4f4f 0%, #1a7a7a 50%, #22a0a0 100%);
+  }
+  .gate-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 48px 40px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+  .gate-logo {
+    width: 72px;
+    height: 72px;
+    background: var(--teal-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+  }
+  .gate-card h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .gate-card p {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-bottom: 28px;
+  }
+  .gate-field { text-align: left; margin-bottom: 16px; }
+  .gate-field label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #3a3c3b;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .gate-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+  .gate-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,122,122,0.1); }
+  .gate-error {
+    color: var(--red);
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .gate-error.show { display: block; }
+  .btn-gate {
+    width: 100%;
+    padding: 13px;
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 8px;
+  }
+  .btn-gate:hover { background: var(--teal-dark); }
+  .gate-footer {
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--gray-400);
+  }
+  .gate-footer a { color: var(--teal); text-decoration: none; }
+
+  /* ── APP SCREEN ── */
+  #appScreen { display: none; }
+
+  .app-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; }
+  .header-logo {
+    width: 32px; height: 32px;
+    background: var(--teal);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 14px; font-weight: 700;
+  }
+  .header-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .header-badge {
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+  }
+  .autosave-wrap { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray-400); }
+  .autosave-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    transition: background 0.3s;
+  }
+  .autosave-dot.saved { background: #27ae60; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 14px 24px;
+  }
+  .progress-steps {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .step-dot {
+    height: 4px;
+    flex: 1;
+    min-width: 20px;
+    border-radius: 2px;
+    background: var(--gray-200);
+    transition: background 0.3s;
+  }
+  .step-dot.done { background: var(--teal); }
+  .step-dot.active { background: var(--teal); opacity: 0.5; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--gray-600);
+  }
+  .progress-label strong { color: var(--teal-dark); font-weight: 600; }
+
+  /* ── MAIN CONTENT ── */
+  .app-body { max-width: 720px; margin: 0 auto; padding: 28px 20px 100px; }
+
+  .section-header { margin-bottom: 24px; }
+  .section-number {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--text); }
+  .section-desc { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+
+  /* ── FIELDS ── */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .field-row.full { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; }
+  .field label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #3a3c3b;
+    margin-bottom: 6px;
+  }
+  .field label .req { color: var(--red); }
+
+  input[type=text],
+  input[type=number],
+  input[type=date],
+  select, textarea {
+    padding: 10px 12px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--white);
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(26,122,122,0.1);
+  }
+  textarea { resize: vertical; min-height: 78px; line-height: 1.6; }
+  select { cursor: pointer; }
+  input::placeholder, textarea::placeholder { color: #888; }
+
+  /* ── PILLS ── */
+  .pill-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+  .pill {
+    padding: 7px 15px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    font-size: 13px;
+    color: #3a3c3b;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .pill:hover { border-color: var(--teal); color: var(--teal); }
+  .pill.sel { background: var(--teal); border-color: var(--teal); color: var(--white); }
+
+  /* ── DOC UPLOAD ── */
+  .doc-list { display: flex; flex-direction: column; gap: 12px; }
+  .doc-item {
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    transition: border-color 0.15s;
+  }
+  .doc-item.has-file { border-color: var(--teal); background: var(--teal-light); }
+  .doc-item.requested { border-color: #e67e22; background: #fef9f4; }
+  .doc-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .doc-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .doc-icon { font-size: 18px; }
+  .doc-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .doc-desc { font-size: 11px; color: var(--gray-600); }
+  .doc-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: var(--red);
+    color: white;
+    text-transform: uppercase;
+  }
+  .doc-actions { display: flex; gap: 8px; }
+  .doc-btn {
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .doc-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .doc-btn.uploaded { border-color: var(--teal); color: var(--teal); }
+  .doc-btn.request-btn { border-color: #e67e22; color: #e67e22; }
+  .doc-upload-area {
+    margin-top: 10px;
+    border: 1.5px dashed var(--teal);
+    border-radius: var(--radius);
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--teal);
+    cursor: pointer;
+  }
+  .doc-upload-area input { display: none; }
+  .doc-files { margin-top: 8px; font-size: 12px; color: var(--gray-600); }
+  .doc-file-tag {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    border-radius: var(--radius-pill);
+    padding: 2px 10px;
+    margin: 2px;
+    font-size: 11px;
+  }
+
+  /* ── NAV BUTTONS ── */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+  }
+  .btn {
+    padding: 11px 24px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+  .btn-secondary {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    border: 1.5px solid var(--gray-200);
+  }
+  .btn-secondary:hover { background: var(--gray-200); }
+  .btn-primary {
+    background: var(--teal);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* ── SUMMARY ── */
+  .summary-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .summary-section {
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .summary-section-title {
+    background: var(--gray-100);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--teal-dark);
+  }
+  .summary-rows { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .summary-row { display: flex; gap: 12px; font-size: 13px; }
+  .summary-key { color: var(--gray-600); min-width: 160px; flex-shrink: 0; }
+  .summary-val { color: var(--text); font-weight: 500; }
+
+  /* ── SUBMIT ── */
+  .submit-status { margin-top: 14px; font-size: 13px; text-align: center; min-height: 20px; }
+  .submit-status.sending { color: var(--teal); }
+  .submit-status.success { color: #27ae60; font-weight: 600; }
+  .submit-status.error { color: var(--red); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1e2120;
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 200;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 600px) {
+    .gate-card { padding: 32px 24px; }
+    .field-row { grid-template-columns: 1fr; }
+    .app-body { padding: 20px 14px 100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- GATE SCREEN -->
+<div class="gate-wrap" id="gateScreen">
+  <div class="gate-card">
+    <div class="gate-logo">🏡</div>
+    <h1>Seller Listing Form</h1>
+    <p>Submit your property to Seamless Landing Real Estate. Enter your name and access code to begin.</p>
+
+    <div class="gate-field">
+      <label>Your full name</label>
+      <input class="gate-input" type="text" id="gateSellerName" placeholder="e.g. Jane Wanjiku" autocomplete="off">
+    </div>
+    <div class="gate-field">
+      <label>Access code</label>
+      <input class="gate-input" type="password" id="gateCode" placeholder="••••••••••" autocomplete="off"
+        onkeydown="if(event.key==='Enter')checkAccess()">
+    </div>
+    <div class="gate-error" id="gateError">Incorrect access code. Please try again.</div>
+
+    <button class="btn-gate" onclick="checkAccess()">Enter form →</button>
+
+    <div class="gate-footer">
+      Access code is provided by Seamless Landing Real Estate.<br>
+      Contact <a href="mailto:seamlesslanding@gmail.com">seamlesslanding@gmail.com</a> if you need access.
+    </div>
+  </div>
+</div>
+
+<!-- APP SCREEN -->
+<div id="appScreen">
+  <div class="app-header">
+    <div class="header-left">
+      <div class="header-logo">SL</div>
+      <span class="header-title">Seller Listing Form</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="header-badge" id="sellerBadge"></span>
+      <div class="autosave-wrap">
+        <div class="autosave-dot" id="autosaveDot"></div>
+        <span id="autosaveText">Auto-save on</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-steps" id="progressSteps"></div>
+    <div class="progress-label">
+      <span id="progressLabel">Section 1 of 8</span>
+      <strong id="progressPct">0% complete</strong>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <div id="formContent"></div>
+    <div id="submitArea" style="display:none;">
+      <button class="btn btn-primary" id="submitBtn" onclick="submitListing()" style="width:100%;padding:14px;font-size:15px;">✓ Submit My Listing</button>
+      <div class="submit-status" id="submitStatus"></div>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="btn btn-secondary" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-primary" id="btnNext" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── ACCESS ──────────────────────────────────────────────────────────────────
+const ACCESS_CODE = "seamless2025";
+let sellerName = "";
+let formData = {};
+let docData = {};
+let currentStep = 0;
+
+function checkAccess() {
+  const name = document.getElementById("gateSellerName").value.trim();
+  const code = document.getElementById("gateCode").value.trim();
+  const err  = document.getElementById("gateError");
+
+  if (!name) { showToast("Please enter your full name"); return; }
+  if (code !== ACCESS_CODE) {
+    err.classList.add("show");
+    document.getElementById("gateCode").value = "";
+    return;
+  }
+  err.classList.remove("show");
+  sellerName = name;
+  formData["sellerName"] = name;
+
+  document.getElementById("gateScreen").style.display = "none";
+  document.getElementById("appScreen").style.display  = "block";
+  document.getElementById("sellerBadge").textContent  = "👤 " + name;
+
+  initDocs();
+  renderStep();
+  loadData();
+}
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+function saveData() {
+  try { localStorage.setItem("sl_seller_form", JSON.stringify({ formData, docData })); } catch(e){}
+  const dot = document.getElementById("autosaveDot");
+  dot.classList.add("saved");
+  setTimeout(() => dot.classList.remove("saved"), 1200);
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem("sl_seller_form");
+    if (raw) {
+      const d = JSON.parse(raw);
+      if (d.formData) { Object.assign(formData, d.formData); sellerName = formData.sellerName || sellerName; }
+      if (d.docData)  { Object.assign(docData, d.docData); }
+    }
+  } catch(e){}
+  renderStep();
+}
+
+function getV(id) { return formData[id] || ""; }
+function saveF(id, val) { formData[id] = val; saveData(); }
+
+// ── SECTIONS ──────────────────────────────────────────────────────────────────
+const sections = [
+  {
+    id: "seller",
+    title: "Your Details",
+    desc: "Tell us about yourself as the seller.",
+    fields: [
+      {id:"sellerName",  label:"Your full name",       type:"text",   req:true, placeholder:"Full name"},
+      {id:"sellerPhone", label:"Phone / WhatsApp",     type:"text",   req:true, placeholder:"e.g. 0712 345 678"},
+      {id:"sellerEmail", label:"Email address",        type:"text",   req:false,placeholder:"e.g. jane@email.com"},
+      {id:"sellerRole",  label:"Your role",            type:"radio",  req:true, options:["Owner","Authorized Agent","Administrator/Executor","Other"]},
+      {id:"sellerRoleOther", label:"If other, specify", type:"text", placeholder:"e.g. Power of Attorney", wrapId:"sellerRoleOtherField"},
+      {id:"ownerAwareMarketing", label:"Is the owner aware this property is being marketed?", type:"radio", req:true, options:["Yes","No","I am the owner"]},
+    ]
+  },
+  {
+    id: "property",
+    title: "Property Details",
+    desc: "Describe the property you are listing.",
+    fields: [
+      {id:"propType",    label:"Property type",        type:"select", req:true, options:["Select...","Land","House","Apartment","Commercial","Mixed Use","Joint Venture (JV)"]},
+      {id:"location",    label:"Location / area",      type:"text",   req:true, placeholder:"e.g. Karen, Bogani Road, near Galleria"},
+      {id:"size",        label:"Property size",        type:"text",   req:true, placeholder:"e.g. 2.5 acres"},
+      {id:"askingPrice", label:"Asking price (KES)",   type:"text",   req:true, placeholder:"e.g. 45,000,000"},
+      {id:"negotiable",  label:"Price negotiable?",    type:"radio",  options:["Yes","No"]},
+      {id:"sellerMotivation", label:"Why are you selling?", type:"select", options:["—","Urgent sale","JV opportunity","Investment exit","Relocation","Upgrading","Other"]},
+      {id:"propertyDesc",label:"Brief property description", type:"textarea", placeholder:"e.g. 2.5-acre prime plot on tarmac road with electricity, water, and clear title. Fully fenced. Ideal for residential development."},
+    ]
+  },
+  {
+    id: "title",
+    title: "Title & Ownership",
+    desc: "Provide details about the title and ownership status.",
+    fields: [
+      {id:"titleType",    label:"Title type",                         type:"radio",  req:true, options:["Freehold","Leasehold"], onChange:"toggleLeaseField"},
+      {id:"leaseYears",   label:"Years remaining on lease (leasehold)",type:"number",placeholder:"e.g. 88", wrapId:"leaseYearsField"},
+      {id:"ardhisasa",    label:"Title registered on ARDHISASA?",     type:"radio",  options:["Yes","No","Unknown"]},
+      {id:"encumbrances", label:"Any encumbrances on title?",         type:"radio",  options:["None","Charge","Caveat","Other"]},
+      {id:"encumbranceDetails", label:"If encumbrance, provide details", type:"textarea", placeholder:"e.g. Bank charge with KCB, outstanding balance approx KES 5M"},
+      {id:"subdivided",   label:"Is property subdivided?",            type:"radio",  options:["Yes","No"]},
+      {id:"landRates",    label:"Land rates status",                  type:"radio",  options:["Paid","Pending"]},
+      {id:"landRent",     label:"Land rent status",                   type:"radio",  options:["Paid","Pending","N/A"]},
+    ]
+  },
+  {
+    id: "zoning",
+    title: "Zoning & Development",
+    desc: "What is the development potential of this property?",
+    fields: [
+      {id:"zoning",       label:"Current zoning",              type:"radio", options:["Residential","Commercial","Mixed Use","Industrial","Agricultural"]},
+      {id:"devAllowed",   label:"Development allowed",         type:"text",  placeholder:"e.g. Villas, Apartments, Commercial"},
+      {id:"maxFloors",    label:"Maximum floors allowed",      type:"number",placeholder:"e.g. 4"},
+      {id:"density",      label:"Density allowed",             type:"text",  placeholder:"e.g. 1 unit per 0.25 acre"},
+      {id:"approxUnits",  label:"Approx. units possible",      type:"number",placeholder:"e.g. 40"},
+    ]
+  },
+  {
+    id: "utilities",
+    title: "Physical & Utilities",
+    desc: "Describe the property's physical attributes and available services.",
+    fields: [
+      {id:"topography",  label:"Topography",              type:"radio", options:["Flat","Gentle slope","Steep","Mixed"]},
+      {id:"accessRoad",  label:"Access road type",        type:"radio", options:["Tarmac","Murram","Footpath","No road"]},
+      {id:"water",       label:"Water connection",        type:"radio", options:["Yes","No","Nearby"]},
+      {id:"electricity", label:"Electricity available",   type:"radio", options:["Yes","No","Nearby"]},
+      {id:"sewer",       label:"Sewer connection",        type:"radio", options:["Yes","No","Septic"]},
+      {id:"fibre",       label:"Fibre internet available",type:"radio", options:["Yes","No","Unknown"]},
+    ]
+  },
+  {
+    id: "viewing",
+    title: "Viewing Arrangements",
+    desc: "How should interested buyers arrange to view the property?",
+    fields: [
+      {id:"viewNotice",      label:"Notice required for viewing", type:"radio",    options:["Same day","24 hrs","48 hrs","72 hrs+"]},
+      {id:"viewDays",        label:"Available viewing days",      type:"text",     placeholder:"e.g. Mon–Sat, not Sundays"},
+      {id:"viewFacilitator", label:"Who facilitates viewing?",    type:"radio",    options:["Owner","Caretaker","Neighbour","Agent"]},
+      {id:"viewContact",     label:"Viewing contact (if different)", type:"text",  placeholder:"e.g. John Mwangi — 0711 222 333"},
+      {id:"viewNotes",       label:"Additional viewing notes",    type:"textarea", placeholder:"e.g. Property is gated. Call 1 hr before arrival. No viewings on public holidays."},
+    ]
+  },
+  {
+    id: "jv",
+    title: "Joint Venture (JV)",
+    desc: "Complete this section only if this is a JV listing.",
+    fields: [
+      {id:"jvApplicable",       label:"Is this a JV listing?",       type:"radio",    options:["Yes","No"], onChange:"toggleJVFields"},
+      {id:"jvLandSize",         label:"Land size (JV)",              type:"text",     placeholder:"e.g. 1 acre",       wrapId:"jvLandSizeField"},
+      {id:"jvLandValue",        label:"Land value (KES)",            type:"text",     placeholder:"e.g. 30,000,000",   wrapId:"jvLandValueField"},
+      {id:"jvRatio",            label:"Proposed JV ratio",           type:"text",     placeholder:"e.g. 50% land / 50% construction", wrapId:"jvRatioField"},
+      {id:"ownerExpectations",  label:"Owner expectations",          type:"textarea", placeholder:"e.g. Owner wants a developer with proven track record of 50+ units. Expects construction to begin within 12 months.", wrapId:"ownerExpectationsField"},
+      {id:"devRequirements",    label:"Developer requirements",      type:"textarea", placeholder:"e.g. NCA-registered company, minimum 3 completed projects, proof of financing required.", wrapId:"devRequirementsField"},
+      {id:"devProfileRequired", label:"Developer profile required?", type:"radio",    options:["Yes","No"], wrapId:"devProfileRequiredField"},
+    ]
+  },
+  {
+    id: "docs",
+    title: "Documents",
+    desc: "Upload available documents or mark them as coming later.",
+    type: "docs"
+  },
+  {
+    id: "summary",
+    title: "Summary & Submit",
+    desc: "Review your listing before submitting.",
+    type: "summary"
+  }
+];
+
+// ── DOCUMENTS ──────────────────────────────────────────────────────────────────
+const docDefs = [
+  {id:"titleDeed",    name:"Title Deed",           icon:"📄", desc:"Copy of the title deed",                            req:true},
+  {id:"idCopy",       name:"ID / Passport Copy",   icon:"🪪", desc:"Owner's national ID or passport",                  req:true},
+  {id:"landRatesCert",name:"Land Rates Clearance", icon:"🏛️", desc:"Land rates clearance certificate",                req:false},
+  {id:"landRentReceipt",name:"Land Rent Receipt",  icon:"🧾", desc:"Most recent land rent payment receipt",            req:false},
+  {id:"sitePhotos",   name:"Site Photos",          icon:"📸", desc:"At least 4 photos of the property",                req:false},
+  {id:"surveyPlan",   name:"Survey / Site Plan",   icon:"🗺️", desc:"Survey plan or site layout drawing",              req:false},
+  {id:"searchDocs",   name:"Official Search",      icon:"🔍", desc:"Recent official search from lands registry",       req:false},
+  {id:"mandate",      name:"Selling Mandate",      icon:"✍️", desc:"Signed mandate or authority to sell (if applicable)", req:false},
+];
+
+function initDocs() {
+  docDefs.forEach(d => {
+    if (!docData[d.id]) docData[d.id] = { status: "", files: [], note: "" };
+  });
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────────
+function renderStep() {
+  const s = sections[currentStep];
+  const total = sections.length;
+  const isLast = currentStep === total - 1;
+  const isSummary = s.type === "summary";
+  const isDocs = s.type === "docs";
+
+  // Progress dots
+  const dots = document.getElementById("progressSteps");
+  dots.innerHTML = sections.map((_, i) =>
+    `<div class="step-dot ${i < currentStep ? "done" : i === currentStep ? "active" : ""}"></div>`
+  ).join("");
+
+  const pct = Math.round((currentStep / (total - 1)) * 100);
+  document.getElementById("progressLabel").textContent = isSummary ? "Summary" : `Section ${currentStep + 1} of ${total}`;
+  document.getElementById("progressPct").textContent = pct + "% complete";
+
+  // Buttons
+  document.getElementById("btnBack").style.display = currentStep === 0 ? "none" : "";
+  document.getElementById("btnNext").style.display = isSummary ? "none" : "";
+  document.getElementById("submitArea").style.display = isSummary ? "block" : "none";
+
+  // Content
+  const fc = document.getElementById("formContent");
+
+  if (isSummary) {
+    fc.innerHTML = renderSummary();
+    return;
+  }
+
+  let html = `
+    <div class="section-header">
+      <div class="section-number">Step ${currentStep + 1} of ${total}</div>
+      <div class="section-title">${s.title}</div>
+      <div class="section-desc">${s.desc}</div>
+    </div>`;
+
+  if (isDocs) {
+    html += renderDocs();
+  } else {
+    html += renderFields(s.fields);
+  }
+
+  fc.innerHTML = html;
+
+  // Restore values
+  if (!isDocs && !isSummary) {
+    s.fields.forEach(f => {
+      if (f.type === "text" || f.type === "number" || f.type === "date") {
+        const el = document.getElementById("field_" + f.id);
+        if (el) el.value = getV(f.id);
+      } else if (f.type === "select") {
+        const el = document.getElementById("field_" + f.id);
+        if (el) el.value = getV(f.id);
+      } else if (f.type === "textarea") {
+        const el = document.getElementById("field_" + f.id);
+        if (el) el.value = getV(f.id);
+      } else if (f.type === "radio") {
+        const val = getV(f.id);
+        if (val) {
+          document.querySelectorAll(`.pill[data-field="${f.id}"]`).forEach(p => {
+            if (p.dataset.val === val) p.classList.add("sel");
+            else p.classList.remove("sel");
+          });
+        }
+      }
+    });
+
+    // Conditional fields
+    toggleLeaseField(getV("titleType"));
+    toggleJVFields(getV("jvApplicable"));
+    toggleSellerRoleOther(getV("sellerRole"));
+  }
+}
+
+function renderFields(fields) {
+  let rows = [];
+  for (let i = 0; i < fields.length; i++) {
+    const f = fields[i];
+    const n = fields[i + 1];
+    if (f.type === "radio" || f.type === "textarea" || !n || n.type === "radio" || n.type === "textarea") {
+      rows.push(`<div class="field-row full">${renderField(f)}</div>`);
+    } else {
+      rows.push(`<div class="field-row">${renderField(f)}${renderField(n)}</div>`);
+      i++;
+    }
+  }
+  return rows.join("");
+}
+
+function renderField(f) {
+  const req = f.req ? `<span class="req"> *</span>` : "";
+  const wid = f.wrapId ? ` id="${f.wrapId}"` : "";
+  let inp = "";
+
+  if (f.type === "radio") {
+    const cb = f.onChange ? `setPill('${f.id}',this.dataset.val,this,'${f.onChange}')` : `setPill('${f.id}',this.dataset.val,this,null)`;
+    inp = `<div class="pill-group">${f.options.map(o =>
+      `<div class="pill" data-field="${f.id}" data-val="${o}" onclick="${cb}">${o}</div>`
+    ).join("")}</div>`;
+  } else if (f.type === "select") {
+    inp = `<select id="field_${f.id}" onchange="saveF('${f.id}',this.value)">${f.options.map(o =>
+      `<option value="${o === "Select..." || o === "—" ? "" : o}">${o}</option>`
+    ).join("")}</select>`;
+  } else if (f.type === "textarea") {
+    inp = `<textarea id="field_${f.id}" placeholder="${f.placeholder || ""}" onblur="saveF('${f.id}',this.value)">${getV(f.id)}</textarea>`;
+  } else {
+    inp = `<input id="field_${f.id}" type="${f.type}" placeholder="${f.placeholder || ""}" value="${getV(f.id)}" onblur="saveF('${f.id}',this.value)" onchange="saveF('${f.id}',this.value)">`;
+  }
+
+  return `<div class="field"${wid}><label>${f.label}${req}</label>${inp}</div>`;
+}
+
+function renderDocs() {
+  return `<div class="doc-list">${docDefs.map(d => {
+    const dd = docData[d.id] || { status: "", files: [], note: "" };
+    const isUp = dd.status === "uploaded";
+    const isReq = dd.status === "requested";
+    const fl = dd.files.length ? `<div class="doc-files">${dd.files.map(f => `<span class="doc-file-tag">📎 ${f}</span>`).join("")}</div>` : "";
+    return `
+    <div class="doc-item ${isUp ? "has-file" : isReq ? "requested" : ""}" id="docitem_${d.id}">
+      <div class="doc-top">
+        <div class="doc-info">
+          <span class="doc-icon">${d.icon}</span>
+          <div>
+            <div class="doc-name">${d.name} ${d.req ? `<span class="doc-badge">Required</span>` : ""}</div>
+            <div class="doc-desc">${d.desc}</div>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="doc-btn ${isUp ? "uploaded" : ""}" onclick="toggleDocUpload('${d.id}')">
+            ${isUp ? "✓ Uploaded" : "Upload"}
+          </button>
+          <button class="doc-btn request-btn ${isReq ? "uploaded" : ""}" onclick="toggleDocRequest('${d.id}')">
+            ${isReq ? "✓ Noted" : "Later"}
+          </button>
+        </div>
+      </div>
+      ${isUp ? `<div>${fl}<div class="doc-upload-area" onclick="triggerUpload('${d.id}')">
+        <input type="file" id="fileInput_${d.id}" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="handleFiles('${d.id}',this)">
+        <span>+ Add more files</span><small style="display:block;color:#888;margin-top:3px;">PDF, JPG, PNG, DOC accepted</small>
+      </div></div>` : ""}
+      ${isReq ? `<div style="margin-top:9px;"><div class="field"><label>Note / date to provide (optional)</label>
+        <textarea placeholder="e.g. Will provide title deed copy by 20 May 2026..." rows="2"
+          onblur="saveDocNote('${d.id}',this.value)">${dd.note}</textarea></div></div>` : ""}
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function renderSummary() {
+  let html = `<div class="section-header">
+    <div class="section-number">Final Step</div>
+    <div class="section-title">Review & Submit</div>
+    <div class="section-desc">Please review your listing details before submitting.</div>
+  </div><div class="summary-wrap">`;
+
+  const lMap = {};
+  sections.forEach(s => {
+    if (s.fields) s.fields.forEach(f => { lMap[f.id] = f.label; });
+  });
+
+  sections.forEach(s => {
+    if (s.type === "summary" || s.type === "docs") return;
+    const rows = [];
+    s.fields.forEach(f => {
+      const v = getV(f.id);
+      if (v) rows.push(`<div class="summary-row"><span class="summary-key">${f.label}</span><span class="summary-val">${v}</span></div>`);
+    });
+    if (rows.length) {
+      html += `<div class="summary-section">
+        <div class="summary-section-title">${s.title}</div>
+        <div class="summary-rows">${rows.join("")}</div>
+      </div>`;
+    }
+  });
+
+  // Docs
+  const docRows = docDefs.map(d => {
+    const dd = docData[d.id] || {};
+    if (!dd.status) return "";
+    const status = dd.status === "uploaded"
+      ? `<span style="color:#27ae60;">✓ Uploaded${dd.files.length ? ` (${dd.files.length} file${dd.files.length>1?"s":""})` : ""}</span>`
+      : `<span style="color:#e67e22;">⏳ To be provided${dd.note ? ` — ${dd.note}` : ""}</span>`;
+    return `<div class="summary-row"><span class="summary-key">${d.name}</span><span class="summary-val">${status}</span></div>`;
+  }).filter(Boolean);
+
+  if (docRows.length) {
+    html += `<div class="summary-section">
+      <div class="summary-section-title">Documents</div>
+      <div class="summary-rows">${docRows.join("")}</div>
+    </div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function goNext() {
+  if (!validateStep()) return;
+  if (currentStep < sections.length - 1) {
+    currentStep++;
+    renderStep();
+    window.scrollTo(0, 0);
+  }
+}
+
+function goBack() {
+  if (currentStep > 0) {
+    currentStep--;
+    renderStep();
+    window.scrollTo(0, 0);
+  }
+}
+
+function validateStep() {
+  const s = sections[currentStep];
+  if (!s.fields) return true;
+  for (const f of s.fields) {
+    if (!f.req) continue;
+    const v = getV(f.id);
+    if (!v || v === "") {
+      showToast(`Please complete: ${f.label}`);
+      return false;
+    }
+  }
+  return true;
+}
+
+// ── PILLS ──────────────────────────────────────────────────────────────────────
+function setPill(id, val, el, cb) {
+  formData[id] = val;
+  if (el && el.closest) {
+    el.closest(".pill-group").querySelectorAll(".pill").forEach(p => p.classList.remove("sel"));
+  }
+  if (el) el.classList.add("sel");
+  saveData();
+  if (cb && typeof window[cb] === "function") window[cb](val);
+}
+
+// ── CONDITIONALS ───────────────────────────────────────────────────────────────
+function toggleLeaseField(v) {
+  const f = document.getElementById("leaseYearsField");
+  if (!f) return;
+  if (v === "Freehold") {
+    f.style.opacity = "0.35"; f.style.pointerEvents = "none";
+    const inp = f.querySelector("input"); if (inp) { inp.value = ""; formData["leaseYears"] = ""; }
+  } else {
+    f.style.opacity = "1"; f.style.pointerEvents = "auto";
+  }
+}
+
+function toggleJVFields(v) {
+  const ids = ["jvLandSizeField","jvLandValueField","jvRatioField","ownerExpectationsField","devRequirementsField","devProfileRequiredField"];
+  ids.forEach(id => {
+    const f = document.getElementById(id);
+    if (!f) return;
+    if (v === "No") { f.style.opacity = "0.35"; f.style.pointerEvents = "none"; }
+    else            { f.style.opacity = "1";    f.style.pointerEvents = "auto"; }
+  });
+}
+
+function toggleSellerRoleOther(v) {
+  const f = document.getElementById("sellerRoleOtherField");
+  if (!f) return;
+  if (v === "Other") { f.style.opacity = "1"; f.style.pointerEvents = "auto"; }
+  else               { f.style.opacity = "0.35"; f.style.pointerEvents = "none"; }
+}
+
+// ── DOCS ───────────────────────────────────────────────────────────────────────
+function toggleDocUpload(id) {
+  const dd = docData[id];
+  if (dd.status === "uploaded") { dd.status = ""; dd.files = []; }
+  else { dd.status = "uploaded"; }
+  saveData(); renderStep();
+  if (dd.status === "uploaded") setTimeout(() => {
+    const inp = document.getElementById("fileInput_" + id);
+    if (inp && dd.files.length === 0) inp.click();
+  }, 100);
+}
+
+function toggleDocRequest(id) {
+  const dd = docData[id];
+  if (dd.status === "requested") { dd.status = ""; }
+  else { dd.status = "requested"; }
+  saveData(); renderStep();
+}
+
+function triggerUpload(id) {
+  const inp = document.getElementById("fileInput_" + id);
+  if (inp) inp.click();
+}
+
+function handleFiles(id, input) {
+  const dd = docData[id];
+  Array.from(input.files).forEach(f => { if (!dd.files.includes(f.name)) dd.files.push(f.name); });
+  saveData(); renderStep();
+}
+
+function saveDocNote(id, val) {
+  docData[id].note = val;
+  saveData();
+}
+
+// ── SUBMIT ─────────────────────────────────────────────────────────────────────
+function submitListing() {
+  const btn = document.getElementById("submitBtn");
+  const status = document.getElementById("submitStatus");
+  btn.disabled = true;
+  status.className = "submit-status sending";
+  status.textContent = "Submitting your listing…";
+
+  const lines = [];
+  lines.push(`SELLER LISTING SUBMISSION`);
+  lines.push(`Submitted by: ${sellerName}`);
+  lines.push(`Date: ${new Date().toLocaleString("en-KE")}`);
+  lines.push(`─────────────────────────────`);
+
+  const lMap = {};
+  sections.forEach(s => { if (s.fields) s.fields.forEach(f => { lMap[f.id] = f.label; }); });
+
+  sections.forEach(s => {
+    if (s.type === "summary" || s.type === "docs") return;
+    lines.push(`\n▸ ${s.title.toUpperCase()}`);
+    s.fields.forEach(f => { const v = formData[f.id]; if (v) lines.push(`  ${lMap[f.id] || f.label}: ${v}`); });
+  });
+
+  lines.push(`\n▸ DOCUMENTS`);
+  docDefs.forEach(d => {
+    const dd = docData[d.id] || {};
+    if (dd.status === "uploaded") lines.push(`  ${d.name}: Uploaded${dd.files.length ? ` (${dd.files.join(", ")})` : ""}`);
+    if (dd.status === "requested") lines.push(`  ${d.name}: To be provided${dd.note ? ` — ${dd.note}` : ""}`);
+  });
+
+  const body = lines.join("\n");
+  const mailto = `mailto:seamlesslanding@gmail.com?subject=${encodeURIComponent("Seller Listing — " + sellerName)}&body=${encodeURIComponent(body)}`;
+
+  setTimeout(() => {
+    window.location.href = mailto;
+    status.className = "submit-status success";
+    status.textContent = "✓ Your listing has been prepared. If your email client didn't open, please email seamlesslanding@gmail.com directly.";
+    btn.disabled = false;
+    try { localStorage.removeItem("sl_seller_form"); } catch(e){}
+  }, 800);
+}
+
+// ── TOAST ──────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+</script>
+</body>
+</html>
